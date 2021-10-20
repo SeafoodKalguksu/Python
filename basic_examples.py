@@ -22,8 +22,31 @@ def for_loops():
     for key, val in dic.items(): # dict
         print(key, val)
 
+
+
+# Differences between 'is' and  '=='
+# Return a shallow copy of the list.
+NUMBERS = [1, 2, 3]
+
+def compare_id():
+    lst = NUMBERS[:]  # NUMBERS.copy()
+    if NUMBERS is lst:
+        print('same id')
+    else:
+        print('different id')
+
+def compare_value():
+    lst = NUMBERS
+    if NUMBERS == lst:
+        print('same value')
+    else:
+        print('different value')
+
+
 def main():
     for_loops()
+    compare_id()
+    compare_value()
 
 if __name__ == "__main__":
     main()
