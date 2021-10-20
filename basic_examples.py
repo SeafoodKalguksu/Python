@@ -2,9 +2,10 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 
+import random
 import collections
 
-# For loop
+
 def for_loops():
     string = "abcdef"
     chars = ['u', 'a', 'e', 'c', 'k', 'i']
@@ -51,7 +52,6 @@ def compare_value():
         print('different value')
 
 
-# print() examples
 def print_examples():
     idx = 0
     favorite_fruit = 'apple'
@@ -65,10 +65,19 @@ def print_examples():
     print(f'{idx}: {favorite_fruit}')   # 3.6+
 
 
+def random_exmaples():
+    random.random() # -> random floating point number in the range [0.0, 1.0].
+    random.uniform(1.0, 100.0)
+
+    random.randint(1, 100)
+    random.randrange(1, 100, 2) # start, stop[, step]
+
+
 def main():
     for_loops()
     compare_id()
     compare_value()
+    random_exmaples()
 
 if __name__ == "__main__":
     main()
