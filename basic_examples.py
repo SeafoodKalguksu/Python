@@ -22,6 +22,15 @@ def for_loops():
     for key, val in dic.items(): # dict
         print(key, val)
 
+    for countdown in 5, 4, 3, 2, 1, 'hey!':
+        print(countdown)
+
+    for _ in range(10):
+        print('hi')
+
+    _, second_number = range(2)
+    print(f'second_number == {second_number}')
+
 
 
 # Differences between 'is' and  '=='
