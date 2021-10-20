@@ -32,7 +32,6 @@ def for_loops():
     print(f'second_number == {second_number}')
 
 
-
 # Differences between 'is' and  '=='
 # Return a shallow copy of the list.
 NUMBERS = [1, 2, 3]
@@ -50,6 +49,20 @@ def compare_value():
         print('same value')
     else:
         print('different value')
+
+
+# print() examples
+def print_examples():
+    idx = 0
+    favorite_fruit = 'apple'
+
+    print('a', 'b', sep=', ')
+    print('aa', end=' ')
+    print('bb')
+
+    print('{0}: {1}'.format(idx, favorite_fruit))
+    print('{}: {}'.format(idx, favorite_fruit))
+    print(f'{idx}: {favorite_fruit}')   # 3.6+
 
 
 def main():
