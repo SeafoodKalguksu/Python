@@ -4,57 +4,63 @@
 
 import random
 import collections
-
+from typing import Dict, List
 
 def for_loops() -> None:
-    string = "abcdef"
-    chars = ['u', 'a', 'e', 'c', 'k', 'i']
-    dic = collections.defaultdict(int)
+    string: str = "abcdef"
+    chars: List[str] = ['u', 'a', 'e', 'c', 'k', 'i']
+    dic: Dict[str, int] = collections.defaultdict(int)
     dic['A'] = 90
     dic['B'] = 80
     dic['C'] = 70
 
+    letter: str
     for letter in string: # string
         print(letter)
 
-    for idx, val in enumerate(chars): # list
-        print(idx, val)
+    idx: int
+    list_val: str
+    for idx, list_val in enumerate(chars): # list
+        print(idx, list_val)
 
-    for key, val in dic.items(): # dict
-        print(key, val)
+    grade_key: str
+    grade_val: int
+    for grade_key, grade_val in dic.items(): # dict
+        print(grade_key, grade_val)
 
+    countdown: int
     for countdown in 5, 4, 3, 2, 1, 'hey!':
         print(countdown)
 
     for _ in range(10):
         print('hi')
 
+    second_number: int
     _, second_number = range(2)
     print(f'second_number == {second_number}')
 
 
 # Differences between 'is' and  '=='
-# Return a shallow copy of the list.
 NUMBERS = [1, 2, 3]
 
 def compare_id() -> None:
-    lst = NUMBERS[:]  # NUMBERS.copy()
-    if NUMBERS is lst:
+    numbers: List = NUMBERS[:]  # deep copy
+    if NUMBERS is numbers:
         print('same id')
     else:
         print('different id')
 
 def compare_value() -> None:
-    lst = NUMBERS
-    if NUMBERS == lst:
+    numbers: List = NUMBERS   # shallow copy
+    if NUMBERS == numbers:
         print('same value')
     else:
         print('different value')
 
 
 def print_examples() -> None:
-    idx = 0
-    favorite_fruit = 'apple'
+    idx: int = 0
+    favorite_fruit: str = 'apple'
 
     print('a', 'b', sep=', ')
     print('aa', end=' ')
