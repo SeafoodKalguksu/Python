@@ -4,12 +4,12 @@
 
 import random
 import collections
-from typing import Dict, List
+from typing import DefaultDict, List
 
 def for_loops() -> None:
     string: str = "abcdef"
     chars: List[str] = ['u', 'a', 'e', 'c', 'k', 'i']
-    dic: Dict[str, int] = collections.defaultdict(int)
+    dic: DefaultDict[str, int] = collections.defaultdict(int)
     dic['A'] = 90
     dic['B'] = 80
     dic['C'] = 70
