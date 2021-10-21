@@ -6,7 +6,7 @@ import random
 import collections
 
 
-def for_loops():
+def for_loops() -> None:
     string = "abcdef"
     chars = ['u', 'a', 'e', 'c', 'k', 'i']
     dic = collections.defaultdict(int)
@@ -37,14 +37,14 @@ def for_loops():
 # Return a shallow copy of the list.
 NUMBERS = [1, 2, 3]
 
-def compare_id():
+def compare_id() -> None:
     lst = NUMBERS[:]  # NUMBERS.copy()
     if NUMBERS is lst:
         print('same id')
     else:
         print('different id')
 
-def compare_value():
+def compare_value() -> None:
     lst = NUMBERS
     if NUMBERS == lst:
         print('same value')
@@ -52,7 +52,7 @@ def compare_value():
         print('different value')
 
 
-def print_examples():
+def print_examples() -> None:
     idx = 0
     favorite_fruit = 'apple'
 
@@ -65,7 +65,7 @@ def print_examples():
     print(f'{idx}: {favorite_fruit}')   # 3.6+
 
 
-def random_exmaples():
+def random_exmaples() -> None:
     random.random() # -> random floating point number in the range [0.0, 1.0].
     random.uniform(1.0, 100.0)
 
@@ -73,7 +73,7 @@ def random_exmaples():
     random.randrange(1, 100, 2) # start, stop[, step]
 
 
-def main():
+def main() -> None:
     for_loops()
     compare_id()
     compare_value()
