@@ -35,9 +35,23 @@ def new_sorted_list() -> None:
     print(f'langs = {langs}, new langs = {new_langs} by Alphabet order')
     print(f'langs = {langs}, new langs = {sorted(langs, key = str.lower)} by lower str')
 
+# Reverse a list
+def reverse_list_in_place() -> None:
+    print(f'integers = {integers}', end = ', ')
+    integers.reverse()
+    print(f'reverse integers = {integers}')
+
+def new_reversed_list() -> None:
+    # reversed(): Return a reverse iterator
+    print(f'integers = {integers}, reversed integer = {list(reversed(integers))}')
+
+
 def main() -> None:
     new_sorted_list()
     sort_list_in_place(integers, langs)
+
+    reverse_list_in_place()
+    new_reversed_list()
 
 
 if __name__ == "__main__":
