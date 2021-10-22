@@ -26,8 +26,17 @@ def sort_list_in_place(numbers: List[int], languages: List[str]) -> None:
     id_list.sort(key = lambda id: id[2:])
     name_number.sort(key = lambda pair: pair[1])
 
+# Return a new sorted list from the items in iterable.
+def new_sorted_list() -> None:
+    new_letters: List[str] = sorted(letters, reverse=True)
+    print(f'letters = {letters}, new letters = {new_letters}')
+
+    new_langs: List[str] = sorted(langs, key = lambda lang: lang[0])
+    print(f'langs = {langs}, new langs = {new_langs} by Alphabet order')
+    print(f'langs = {langs}, new langs = {sorted(langs, key = str.lower)} by lower str')
 
 def main() -> None:
+    new_sorted_list()
     sort_list_in_place(integers, langs)
 
 
