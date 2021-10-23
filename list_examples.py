@@ -63,11 +63,18 @@ def remove_item() -> None:
     print(integers.pop()) # remove and return item at index (default last)
     print(integers.pop(1))
 
-    integers.clear() # remove all items
+    # remove all items
+    # integers.clear()
     # del integers[:]
     # integers = []
     # integers[:] = []
     # integers *= 0
+
+
+# Return the index of the value from the list
+def get_index() -> None:
+    index = integers.index(3, 2, -1) # list.index(item[, start[, end]])
+    print(f'3 is at integers[{index}]')
 
 
 def main() -> None:
@@ -79,6 +86,7 @@ def main() -> None:
 
     add_item()
     remove_item()
+    get_index()
 
 if __name__ == "__main__":
     main()
