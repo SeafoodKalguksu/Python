@@ -16,7 +16,7 @@ duplicates: List[str] = ['a', 'b', 'a', 'c', 'c', 'a', 'b', 'a', 'c', 'c', 'a',
 
 
 # Sort the items of the list in place.
-def sort_list_in_place(numbers: List[int], languages: List[str]) -> None:
+def sort_in_place(numbers: List[int], languages: List[str]) -> None:
     numbers.sort()
     numbers.sort(reverse = True)
     languages.sort(key = len)
@@ -36,7 +36,7 @@ def new_sorted_list() -> None:
     print(f'langs = {langs}, new langs = {sorted(langs, key = str.lower)} by lower str')
 
 # Reverse a list
-def reverse_list_in_place() -> None:
+def reverse_in_place() -> None:
     print(f'integers = {integers}', end = ', ')
     integers.reverse()
     print(f'reverse integers = {integers}')
@@ -46,13 +46,22 @@ def new_reversed_list() -> None:
     print(f'integers = {integers}, reversed integer = {list(reversed(integers))}')
 
 
+# Add an item in the list
+def add_item() -> None:
+    integers.append(1)  # (obj)
+    integers.append('1')
+    integers.insert(2, '2') # (idx, obj)
+    integers.insert(2, 2)
+
+
 def main() -> None:
     new_sorted_list()
-    sort_list_in_place(integers, langs)
+    sort_in_place(integers, langs)
 
-    reverse_list_in_place()
+    reverse_in_place()
     new_reversed_list()
 
+    add_item()
 
 if __name__ == "__main__":
     main()
