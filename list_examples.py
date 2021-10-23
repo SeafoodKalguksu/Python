@@ -74,7 +74,14 @@ def remove_item() -> None:
 # Return the index of the value from the list
 def get_index() -> None:
     index = integers.index(3, 2, -1) # list.index(item[, start[, end]])
-    print(f'3 is at integers[{index}]')
+    print(f'3 is at integers[{index}].')
+
+    # Return the first index of the value from the list
+    if 'a' not in integers:
+        print("'a' is not in integers.")
+    else:
+        idx = integers.index('a')
+        print(f'a is at integers[{idx}].')
 
 
 def main() -> None:
