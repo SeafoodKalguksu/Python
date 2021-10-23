@@ -52,6 +52,22 @@ def add_item() -> None:
     integers.append('1')
     integers.insert(2, '2') # (idx, obj)
     integers.insert(2, 2)
+    integers.append('a')
+    integers.insert(2, 'b')
+
+
+# Remove item from the list
+def remove_item() -> None:
+    integers.remove(1) # remove the first occurrence of the value
+
+    print(integers.pop()) # remove and return item at index (default last)
+    print(integers.pop(1))
+
+    integers.clear() # remove all items
+    # del integers[:]
+    # integers = []
+    # integers[:] = []
+    # integers *= 0
 
 
 def main() -> None:
@@ -62,6 +78,7 @@ def main() -> None:
     new_reversed_list()
 
     add_item()
+    remove_item()
 
 if __name__ == "__main__":
     main()
