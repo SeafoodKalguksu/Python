@@ -11,8 +11,6 @@ langs: List[str] = ['Korean', 'Swedish', 'Japanese', 'Chinese', 'Spanish']
 langs_tuple: Tuple[str] = ('English', 'German')
 id_list: List = ['id01', 'id07', 'id02', 'id12', 'id03']
 name_number: List[Tuple[str, int]] = [('Jake', 8), ('Sam', 3), ('Mark', 1), ('Jack', 5)]
-duplicates: List[str] = ['a', 'b', 'a', 'c', 'c', 'a', 'b', 'a', 'c', 'c', 'a',
-              'b', 'a', 'c', 'c', 'a', 'b', 'a', 'c', 'c', 1, 2, 5, 4, 7, 3, 'u', 'a', 'e', 'c', 'k', 'i', 'Korean', 'Japanese', 'Chinese', 'Spanish', 'English', 'German', 'Korean', 'Japanese', 'Chinese', 'Spanish']
 
 
 # Sort the items of the list in place.
@@ -135,7 +133,7 @@ def main() -> None:
 
     # Count the given item in the list
     print(f'integers.count(7) = {integers.count(7)}')
-    
+
     remove_non_integers()
     non_duplicate_integers = remove_duplicates(integers)
     print(f'integers = {non_duplicate_integers}')
