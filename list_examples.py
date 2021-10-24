@@ -56,6 +56,14 @@ def add_item() -> None:
     integers.insert(2, 'b')
 
 
+# Extend the list by appending elements from the iterable
+def extend_iterable() -> None:
+    numbers: List[int] = [9, 8, 7, 6]
+    print(f'numbers = {numbers}, integers = {integers}')
+    integers.extend(numbers)
+    print(f'integers = {integers} after integers.extend(number)')
+
+
 # Remove item from the list
 def remove_item() -> None:
     integers.remove(1) # remove the first occurrence of the value
@@ -92,6 +100,7 @@ def main() -> None:
     new_reversed_list()
 
     add_item()
+    extend_iterable()
     remove_item()
     get_index()
 
