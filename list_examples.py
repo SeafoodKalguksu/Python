@@ -92,6 +92,22 @@ def get_index() -> None:
         print(f'a is at integers[{idx}].')
 
 
+# Remove non-integr elements from the list
+def remove_non_integers() -> None:
+    non_integer_idx = []
+
+    for idx, item in enumerate(integers):
+        # if type(item) != int:
+        if not isinstance(item, int):
+            print(f'item = {item}, type({item}) = {type(item)}')
+            non_integer_idx.append(idx)
+
+    for idx in non_integer_idx[::-1]:
+        integers.pop(idx)
+
+    print(f'integers = {integers} after removing non integer elements')
+
+
 def main() -> None:
     new_sorted_list()
     sort_in_place(integers, langs)
@@ -103,6 +119,8 @@ def main() -> None:
     extend_iterable()
     remove_item()
     get_index()
+
+    remove_non_integers()
 
 if __name__ == "__main__":
     main()
