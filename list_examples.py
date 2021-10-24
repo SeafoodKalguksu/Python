@@ -108,6 +108,19 @@ def remove_non_integers() -> None:
     print(f'integers = {integers} after removing non integer elements')
 
 
+# Remove duplicates from the list
+def remove_duplicates(lst: List[int]) -> List[int]:
+    # O(n²)
+    # non_duplicates: List = []
+
+    # for item in lst: # O(n)
+    #     if item not in non_duplicates: # O(n)
+    #         non_duplicates.append(item)
+
+    # dict.fromkeys() is much faster than using for looping. O(n) x O(1)
+    return list(dict.fromkeys(lst))
+
+
 def main() -> None:
     new_sorted_list()
     sort_in_place(integers, langs)
@@ -121,6 +134,8 @@ def main() -> None:
     get_index()
 
     remove_non_integers()
+    non_duplicate_integers = remove_duplicates(integers)
+    print(f'integers = {non_duplicate_integers}')
 
 if __name__ == "__main__":
     main()
