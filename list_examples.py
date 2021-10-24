@@ -133,6 +133,9 @@ def main() -> None:
     remove_item()
     get_index()
 
+    # Count the given item in the list
+    print(f'integers.count(7) = {integers.count(7)}')
+    
     remove_non_integers()
     non_duplicate_integers = remove_duplicates(integers)
     print(f'integers = {non_duplicate_integers}')
