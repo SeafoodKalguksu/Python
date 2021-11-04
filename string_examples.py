@@ -6,7 +6,7 @@ from typing import List
 
 FRUITS = 'apple#banana#cherry#orange'
 WORKING_DAYS = 'Mon Tue Wed Thu Fri'
-NAME = "Heeseok"
+NAME = "heeseok"
 INTEGERS = '123456789012345'
 
 def string_into_list() -> None:
@@ -45,13 +45,32 @@ def index_examples() -> None:
     # Like find(), but raise ValueError when the substring is not found.
     # str.index(sub[, start[, end]])
     index = INTEGERS.index('1')
+    print(f"index = {index}")
     # index = integers.index('11')  # ValueError
+
+def replace_example() -> None:
+    # String object is immutable.
+    # name[0] = 'H' wrong! using str.replace() instead of assignment.
+    new_name: str = NAME.replace('h', 'H')
+    print(f"new_name = {new_name}")
+
+def reverse_examples() -> None:
+    # Reverse string
+    reversed_name_1: str = NAME[-1::-1]
+    reversed_name_2: str = NAME[::-1]
+    reversed_name_3: str = ''.join(list(reversed(list(NAME))))
+
+    print(f"reversed_name_1 = {reversed_name_1}")
+    print(f"reversed_name_2 = {reversed_name_2}")
+    print(f"reversed_name_3 = {reversed_name_3}")
 
 
 def main() -> None:
     string_into_list()
     list_to_string()
     find_examples()
+    replace_example()
+    reverse_examples()
 
 if __name__ == "__main__":
     main()
