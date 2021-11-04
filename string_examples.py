@@ -8,6 +8,7 @@ FRUITS = 'apple#banana#cherry#orange'
 WORKING_DAYS = 'Mon Tue Wed Thu Fri'
 NAME = "heeseok"
 INTEGERS = '123456789012345'
+TEXT = 'a fine day'
 
 def string_into_list() -> None:
     # Split a string into a list.
@@ -21,13 +22,14 @@ def string_into_list() -> None:
     print(f"working_days = {working_days}")
 
     # Convert a string to a list.
-    name: List = list(NAME)
+    name: List[str] = list(NAME)
     print(f"name = {name}")
 
 def list_to_string() -> None:
     # Convert a list to a string.
-    capital_name: str = ''.join('HEESEOK')
-    print(f"capital_name = {capital_name}")
+    greeting: List[str] = ['g', 'o', 'o', 'd', ' ', 'm', 'o', 'r', 'n', 'i', 'n', 'g']
+    greeting_str: str = ''.join(greeting)
+    print(f"''.join(greeting) -> {greeting_str}")
 
 def find_examples() -> None:
     # Return the lowest index in the string where substring sub is found.
@@ -52,7 +54,7 @@ def replace_example() -> None:
     # String object is immutable.
     # name[0] = 'H' wrong! using str.replace() instead of assignment.
     new_name: str = NAME.replace('h', 'H')
-    print(f"new_name = {new_name}")
+    print(f"NAME.replace('h', 'H') -> {new_name}")
 
 def reverse_examples() -> None:
     # Reverse string
@@ -60,9 +62,21 @@ def reverse_examples() -> None:
     reversed_name_2: str = NAME[::-1]
     reversed_name_3: str = ''.join(list(reversed(list(NAME))))
 
-    print(f"reversed_name_1 = {reversed_name_1}")
-    print(f"reversed_name_2 = {reversed_name_2}")
-    print(f"reversed_name_3 = {reversed_name_3}")
+    print(f"NAME[-1::-1] -> {reversed_name_1}")
+    print(f"NAME[::-1] -> {reversed_name_2}")
+    print(f"''.join(list(reversed(list(NAME)))) -> {reversed_name_3}")
+
+def capitalize_examples() -> None:
+    new_text_1: str = TEXT.capitalize()
+    print(f"TEXT.capitalize() -> {new_text_1}")
+    new_text_2: str = TEXT.title()
+    print(f"TEXT.title() -> {new_text_2}")
+    new_text_3: str = TEXT.swapcase()
+    print(f"TEXT.swapcase() -> {new_text_3}")
+    new_text_4: str = TEXT.upper()
+    print(f"TEXT.upper() -> {new_text_4}")
+    new_text_5: str = new_text_4.lower()
+    print(f"new_text_4.lower() -> {new_text_5}")
 
 
 def main() -> None:
@@ -71,6 +85,7 @@ def main() -> None:
     find_examples()
     replace_example()
     reverse_examples()
+    capitalize_examples()
 
 if __name__ == "__main__":
     main()
