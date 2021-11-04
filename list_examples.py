@@ -4,7 +4,6 @@
 
 from typing import List, Tuple
 
-
 integers: List[int] = [1, 2, 5, 4, 7, 3]
 letters: List[str] = ['u', 'a', 'e', 'c', 'k', 'i']
 langs: List[str] = ['Korean', 'Swedish', 'Japanese', 'Chinese', 'Spanish']
@@ -12,9 +11,8 @@ langs_tuple: Tuple[str] = ('English', 'German')
 id_list: List = ['id01', 'id07', 'id02', 'id12', 'id03']
 name_number: List[Tuple[str, int]] = [('Jake', 8), ('Sam', 3), ('Mark', 1), ('Jack', 5)]
 
-
-# Sort the items of the list in place.
 def sort_in_place(numbers: List[int], languages: List[str]) -> None:
+    # Sort the items of the list in place.
     numbers.sort()
     numbers.sort(reverse = True)
     languages.sort(key = len)
@@ -24,8 +22,8 @@ def sort_in_place(numbers: List[int], languages: List[str]) -> None:
     id_list.sort(key = lambda id: id[2:])
     name_number.sort(key = lambda pair: pair[1])
 
-# Return a new sorted list from the items in iterable.
 def new_sorted_list() -> None:
+    # Return a new sorted list from the items in iterable.
     new_letters: List[str] = sorted(letters, reverse=True)
     print(f'letters = {letters}, new letters = {new_letters}')
 
@@ -33,9 +31,10 @@ def new_sorted_list() -> None:
     print(f'langs = {langs}, new langs = {new_langs} by Alphabet order')
     print(f'langs = {langs}, new langs = {sorted(langs, key = str.lower)} by lower str')
 
-# Reverse a list
 def reverse_in_place() -> None:
+    # Reverse a list
     print(f'integers = {integers}', end = ', ')
+    # Reverse the list in place
     integers.reverse()
     print(f'reverse integers = {integers}')
 
@@ -43,9 +42,8 @@ def new_reversed_list() -> None:
     # reversed(): Return a reverse iterator
     print(f'integers = {integers}, reversed integer = {list(reversed(integers))}')
 
-
-# Add an item in the list
 def add_item() -> None:
+    # Add an item in the list
     integers.append(1)  # (obj)
     integers.append('1')
     integers.insert(2, '2') # (idx, obj)
@@ -53,19 +51,9 @@ def add_item() -> None:
     integers.append('a')
     integers.insert(2, 'b')
 
-
-# Extend the list by appending elements from the iterable
-def extend_iterable() -> None:
-    numbers: List[int] = [9, 8, 7, 6]
-    print(f'numbers = {numbers}, integers = {integers}')
-    integers.extend(numbers)
-    print(f'integers = {integers} after integers.extend(number)')
-
-
-# Remove item from the list
 def remove_item() -> None:
+    # Remove item from the list
     integers.remove(1) # remove the first occurrence of the value
-
     print(integers.pop()) # remove and return item at index (default last)
     print(integers.pop(1))
 
@@ -76,10 +64,17 @@ def remove_item() -> None:
     # integers[:] = []
     # integers *= 0
 
+def extend_iterable() -> None:
+    # Extend the list by appending elements from the iterable
+    numbers: List[int] = [9, 8, 7, 6]
+    print(f'numbers = {numbers}, integers = {integers}')
+    integers.extend(numbers)
+    print(f'integers = {integers} after integers.extend(number)')
 
-# Return the index of the value from the list
 def get_index() -> None:
-    index = integers.index(3, 2, -1) # list.index(item[, start[, end]])
+    # Return the index of the value from the list
+    # list.index(item[, start[, end]])
+    index = integers.index(3, 2, -1)
     print(f'3 is at integers[{index}].')
 
     # Return the first index of the value from the list
@@ -89,9 +84,12 @@ def get_index() -> None:
         idx = integers.index('a')
         print(f'a is at integers[{idx}].')
 
+def count_item() -> None:
+    # Count the given item in the list
+    print(f'integers.count(5) = {integers.count(5)}')
 
-# Remove non-integr elements from the list
 def remove_non_integers() -> None:
+    # Remove non-integr elements from the list
     non_integer_idx = []
 
     for idx, item in enumerate(integers):
@@ -105,9 +103,9 @@ def remove_non_integers() -> None:
 
     print(f'integers = {integers} after removing non integer elements')
 
-
-# Remove duplicates from the list
 def remove_duplicates(lst: List[int]) -> List[int]:
+    # Remove duplicates from the list
+
     # O(n²)
     # non_duplicates: List = []
 
@@ -127,12 +125,10 @@ def main() -> None:
     new_reversed_list()
 
     add_item()
-    extend_iterable()
     remove_item()
+    extend_iterable()
     get_index()
-
-    # Count the given item in the list
-    print(f'integers.count(7) = {integers.count(7)}')
+    count_item()
 
     remove_non_integers()
     non_duplicate_integers = remove_duplicates(integers)
