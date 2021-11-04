@@ -78,6 +78,13 @@ def capitalize_examples() -> None:
     new_text_5: str = new_text_4.lower()
     print(f"new_text_4.lower() -> {new_text_5}")
 
+def strip_examples() -> None:
+    strip_sample:str = "    ,[strip sample],    "
+    print("strip_sample = '    ,[strip sample],    '")
+    print(f"strip_sample.strip() -> {strip_sample.strip()}")
+    print(f"strip_sample.lstrip() -> {strip_sample.lstrip()}")
+    print(f"strip_sample.rstrip() -> {strip_sample.rstrip()}")
+
 
 def main() -> None:
     string_into_list()
@@ -86,6 +93,7 @@ def main() -> None:
     replace_example()
     reverse_examples()
     capitalize_examples()
+    strip_examples()
 
 if __name__ == "__main__":
     main()
