@@ -79,11 +79,25 @@ def random_exmaples() -> None:
     random.randrange(1, 100, 2) # start, stop[, step]
 
 
+# Counter object
+def counter() -> None:
+    lst: List[str] = ['a', 'b', 'c', 'd', 'e', 'e', 'f', 'f', 'e']
+    string: str = 'abcdeabcdabcaba'
+
+    count_alphabets = collections.Counter(lst)
+    most_common_alphabets = collections.Counter(string).most_common(2)
+    print(f'count alphabets in lst = {count_alphabets}')
+    # Counter({'e': 3, 'f': 2, 'a': 1, 'b': 1, 'c': 1, 'd': 1})
+    print(f'most common alphabets(2) in string = {most_common_alphabets}')
+    # [('a', 5), ('b', 4)]
+
+
 def main() -> None:
     for_loops()
     compare_id()
     compare_value()
     random_exmaples()
+    counter()
 
 if __name__ == "__main__":
     main()
