@@ -27,9 +27,13 @@ def default_dictionary() -> None:
     print(dic)
 
 def compound_dictionary() -> None:
-    colors: Tuple[str, int] =  [('white', 1), ('blue', 2), ('white', 3), ('blue', 4), ('red', 1)]
+    colors: Tuple[str, int] =  [('white', 1), ('blue', 2), ('red', 1)]
     lst: List[Tuple] = colors
     dic: DefaultDict[str, List[int]] = collections.defaultdict(list)
+
+    lst.append(('black', 2))
+    lst.append(('white', 2))
+    lst.append(('blue', 4))
 
     for key, value  in lst:
         # dic[key] = value
@@ -38,6 +42,14 @@ def compound_dictionary() -> None:
         # value to the list.
         dic[key].append(value)
 
-    # defaultdict(<class 'list'>, {'white': [1, 3], 'blue': [2, 4], 'red': [1]})
     print(sorted(dic.items(), reverse=False))
-    # [('blue', [2, 4]), ('red', [1]), ('white', [1, 3])]
+    # [('blue', [2, 4]), ('red', [1]), ('white', [1, 2])]
+
+
+def main() -> None:
+    dictionary()
+    default_dictionary()
+    compound_dictionary()
+
+if __name__ == "__main__":
+    main()
