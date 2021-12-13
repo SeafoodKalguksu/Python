@@ -4,24 +4,26 @@
 
 # Storage class
 # https://www.geeksforgeeks.org/storage-classes-in-c-with-examples/
-def manipulate_global_variable_in_func():
-    global x
-    x = 11
+def manipulate_global_variable():
+    global variable  # in order to access the variable in global scope.
+    variable = 11
 
-def func():
-    x = 12
-    print("local x = ", x)
 
-    def func_in_func():
-        nonlocal x
-        x = 13
+def outer_func():
+    variable = 12  # declared as a local variable in outer_func().
+    print("local variable = ", variable)
 
-    func_in_func()
-    print("after func_in_func() = ", x)
+    def inner_func():
+        nonlocal variable  # in order to access the variable in outer_func().
+        variable = 13
 
-x: int = 10
-print("golbal x = ", x)
-manipulate_global_variable_in_func()
-print("after manipulate_global_variable_in_func() = ", x)
-func()
-print(f'gloval x = {x}')
+    inner_func()
+    print("after inner_func() = ", variable)
+
+
+variable: int = 10  # declared as a global variable
+print("golbal variable = ", variable)
+manipulate_global_variable()
+print("after manipulate_global_variable() = ", variable)
+outer_func()
+print(f'gloval variable = {variable}')
