@@ -2,7 +2,7 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 
-from typing import List
+from typing import List, Dict
 
 RANGE: int = 0
 ENUMERATE: int = 1
@@ -42,8 +42,25 @@ def using_list_comprehension(select: int = LIST_COMPREHENSION) -> None:
     squares_2 = [index * index for index in range(10)]
 
 
+def using_sorted() -> None:
+    """
+    3.Sort complex iterables with sorted()
+    """
+    list_data: List[int] = [3, 5, 1, 10, 9]
+    tuple_data: List[int] = (3, 5, 1, 10, 9)
+    complex_data: List[Dict] = [
+        {"name": "Max", "age": 6},
+        {"name": "Lisa", "age": 20},
+        {"name": "Ben", "age": 9},
+    ]
+
+    print(sorted(list_data))  # [1, 3, 5, 9, 10]
+    print(sorted(tuple_data))  # [1, 3, 5, 9, 10]
+    print(sorted(complex_data, key=lambda element: element["age"]))
+
+
 def main() -> None:
-    pass
+    using_sorted()
 
 
 if __name__ == "__main__":
