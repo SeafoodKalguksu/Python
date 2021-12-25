@@ -6,9 +6,13 @@
 Client
 """
 from typing import List, Tuple
-from enum import IntEnum
+
+# from enum import IntEnum
 import random
 import sys
+
+# from struct import *
+import socket
 
 
 class MyPacket:
@@ -30,19 +34,19 @@ class MyPacket:
 
     class Header:
         class MessageID:
-            class ServiceID(IntEnum):
+            class ServiceID:
                 """
                 2 bytes
                 """
 
-                DEFAULT: int = 0x1001
+                DEFAULT = 0x1001
 
-            class MethodID(IntEnum):
+            class MethodID:
                 """
                 2 bytes
                 """
 
-                DEFAULT: int = 0x2001
+                DEFAULT = 0x2001
 
             def __init__(
                 self,
@@ -55,19 +59,19 @@ class MyPacket:
                 return self._msg_id
 
         class RequestID:
-            class ClientID(IntEnum):
+            class ClientID:
                 """
                 2 bytes
                 """
 
-                DEFAULT: int = 0x3001
+                DEFAULT = 0x3001
 
-            class SessionID(IntEnum):
+            class SessionID:
                 """
                 2 bytes
                 """
 
-                DEFAULT: int = 0x4001
+                DEFAULT = 0x4001
 
             def __init__(
                 self,
@@ -79,13 +83,13 @@ class MyPacket:
             def get_request_id(self) -> Tuple[int, int]:
                 return self._request_id
 
-        class ProtocolVersion(IntEnum):
+        class ProtocolVersion:
             DEFAULT: int = 0x01
 
-        class InterfaceVersion(IntEnum):
+        class InterfaceVersion:
             DEFAULT: int = 0x01
 
-        class MessageType(IntEnum):
+        class MessageType:
             REQUEST: int = 0x00
             RESPONSE: int = 0x80
 
@@ -95,7 +99,7 @@ class MyPacket:
         def get_message_type(self) -> MessageType:
             return self._message_type
 
-        class ReturnCode(IntEnum):
+        class ReturnCode:
             DEFAULT: int = 0x00
 
         def set_return_code(self, code: ReturnCode) -> None:
@@ -104,18 +108,18 @@ class MyPacket:
         def get_return_code(self) -> ReturnCode:
             return self._return_code
 
-        def set_length(self, length: int = 0):
+        def set_packet_length(self, packet_length: int = 0):
             try:
-                if length > self.MAX_PACKET_LENGTH:
+                if packet_length > self.MAX_PACKET_LENGTH:
                     raise Exception(
                         "length should not be greater than {self.MAX_PACKET_LENGTH} bytes."
                     )
-                elif length < 0:
-                    raise Exception("length should be less than 0.")
+                elif packet_length < self.HEADER_SIZE:
+                    raise Exception("length should be less than HEADER_SIZE.")
             except Exception as e:
                 print(e)
             else:
-                self._length = length
+                self._length = packet_length
 
         def get_length(self) -> int:
             return self._length
@@ -159,7 +163,7 @@ class MyPacket:
         self._header = self.Header()
 
         # 8. Payload [Variable size is up to 3K]
-        self._payload: List[int] = None
+        self._payload: bytearray = None
 
     def get_header(self) -> Header:
         return self._header
@@ -191,43 +195,85 @@ class MyPacket:
 
 class Sender:
     def __init__(self) -> None:
-        pass
+        self.tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.tcp_socket.connect(("localhost", 5004))
 
     def send(self, packet: MyPacket) -> None:
-        pass
+        length = packet.get_header().get_length()
+        payoad = packet.get_payload()
+
+        # Message ID
+        service_id, method_id = packet.get_header().MessageID().get_msg_id()
+        sent_size = self.tcp_socket.send(service_id.to_bytes(2, "big"))
+        sent_size = self.tcp_socket.send(method_id.to_bytes(2, "big"))
+
+        # Length
+        sent_size = self.tcp_socket.send(length.to_bytes(4, "big"))
+
+        # Request ID
+        client_id, session_id = packet.get_header().RequestID().get_request_id()
+        sent_size = self.tcp_socket.send(client_id.to_bytes(2, "big"))
+        sent_size = self.tcp_socket.send(session_id.to_bytes(2, "big"))
+
+        # Protocol version
+        protocol_version = packet.get_header().ProtocolVersion.DEFAULT
+        sent_size = self.tcp_socket.send(protocol_version.to_bytes(1, "big"))
+
+        # Interface version
+        interface_version = packet.get_header().InterfaceVersion.DEFAULT
+        sent_size = self.tcp_socket.send(interface_version.to_bytes(1, "big"))
+
+        # Message type
+        message_type = packet.get_header().MessageType.RESPONSE
+        sent_size = self.tcp_socket.send(message_type.to_bytes(1, "big"))
+
+        # Return code
+        return_code = packet.get_header().ReturnCode.DEFAULT
+        sent_size = self.tcp_socket.send(return_code.to_bytes(1, "big"))
+
+        print(f"service_id: {service_id}")
+        print(f"method_id: {method_id}")
+        print(f"length: {length}")
+        print(f"client_id: {client_id}")
+        print(f"session_id: {session_id}")
+        print(f"protocol: {protocol_version}")
+        print(f"interface: {interface_version}")
+        print(f"msg type: {message_type}")
+        print(f"return code: {return_code}")
 
     def receive(self) -> MyPacket:
         pass
 
 
-class PacketSize(IntEnum):
+class PacketSize:
     HEADER_16: int = 16
     MAX_PAYLOAD_3K: int = 3 * (2 ** 10)
     MAX: int = HEADER_16 + MAX_PAYLOAD_3K
 
 
-def make_random_data(length: int) -> List[int]:
-    payload: List[int] = []
+def make_random_data(payload_length: int) -> List[int]:
+    payload = bytearray(payload_length)
+    print(f"sys.getsizeof(payload): {sys.getsizeof(payload)}")
 
-    for _ in range(length):
-        data = random.randint(0, 256)  # 1 byte for data
-        payload.append(data)
+    for index in range(payload_length):
+        data = random.randint(0, 255)  # 1 byte for data
+        payload[index] = data
 
     return payload
 
 
 def get_random_payload_size() -> int:
-    return random.randint(PacketSize.HEADER_16, PacketSize.MAX + 1)
+    return random.randint(0, PacketSize.MAX_PAYLOAD_3K)
 
 
 def make_packet_for_sending(packet: MyPacket) -> None:
     header = packet.get_header()
-    payload = packet.get_payload()
+    payload: bytearray = packet.get_payload()
 
     # 1. Length
     payload_length: int = get_random_payload_size()
     print(f"payload_length = {payload_length}")
-    header.set_length(PacketSize.HEADER_16 + payload_length)
+    header.set_packet_length(PacketSize.HEADER_16 + payload_length)
 
     # 2. Message Type
     header.set_message_type(header.MessageType.RESPONSE)
@@ -236,33 +282,19 @@ def make_packet_for_sending(packet: MyPacket) -> None:
     packet.set_payload(make_random_data(payload_length))
 
 
-def receive() -> MyPacket:
-    packet = MyPacket()
-    header = packet.get_header()
-    payload = packet.get_payload()
-
-    # 1. Length
-    header.set_length(get_random_length())
-
-    # 2. Message Type
-    header.set_message_type(header.MessageType.RESPONSE)
-
-    # 3. Return Code
-    # header(16) + "Hello"(5)
-    header.set_length(21)
-
-
 def main():
     """
     1. set a random number for lenth(Header + Payload), Max payload is 3K
     """
     packet = MyPacket()
-    make_packet_for_sending(packet)
-    print(f"sys.getsizeof(packet) = {sys.getsizeof(packet)}")
-    print(f"sys.getsizeof(packet._header) = {sys.getsizeof(packet._header)}")
-    print(f"packet._header.get_length() = {packet._header.get_length()}")
-    print(f"sys.getsizeof(packet._payload) = {sys.getsizeof(packet._payload)}")
-    print(f"List[int] = {sys.getsizeof(List[int])}")
+    sender = Sender()
+
+    for _ in range(10):
+        make_packet_for_sending(packet)
+        sender.send(packet)
+
+    print("finished!")
+    print("check the file!")
 
 
 if __name__ == "__main__":
