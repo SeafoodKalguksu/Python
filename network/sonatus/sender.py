@@ -106,9 +106,9 @@ class MyPacket:
 
         def set_length(self, length: int = 0):
             try:
-                if length > self.MAX_LENGTH:
+                if length > self.MAX_PACKET_LENGTH:
                     raise Exception(
-                        "length should not be greater than {self.MAX_LENGTH} bytes."
+                        "length should not be greater than {self.MAX_PACKET_LENGTH} bytes."
                     )
                 elif length < 0:
                     raise Exception("length should be less than 0.")
@@ -134,7 +134,7 @@ class MyPacket:
             self._length: int = 0
             self.HEADER_SIZE = 16
             self.MAX_PAYLOAD_SIZE = 3 * (2 ** 10)
-            self.MAX_LENGTH: int = self.HEADER_SIZE + self.MAX_PAYLOAD_SIZE
+            self.MAX_PACKET_LENGTH: int = self.HEADER_SIZE + self.MAX_PAYLOAD_SIZE
 
             # 3. RequestID [32 bit]
             request_id = self.RequestID()
