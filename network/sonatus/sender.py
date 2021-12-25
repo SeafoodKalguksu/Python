@@ -10,9 +10,8 @@ from typing import List, Tuple
 # from enum import IntEnum
 import random
 import sys
-
-# from struct import *
 import socket
+import time
 
 
 class MyPacket:
@@ -197,39 +196,50 @@ class Sender:
     def __init__(self) -> None:
         self.tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.tcp_socket.connect(("localhost", 5004))
+        self.file = open("sent_packet.txt", "ab")
 
-    def send(self, packet: MyPacket) -> None:
+    def close(self) -> None:
+        self.file.close()
+        self.tcp_socket.close()
+
+    def save_in_file(self, packet_bytes: bytes) -> None:
+        self.file.write(packet_bytes)
+
+    def packet_to_bytes(self, packet: MyPacket) -> bytes:
         length = packet.get_header().get_length()
         payoad = packet.get_payload()
 
         # Message ID
         service_id, method_id = packet.get_header().MessageID().get_msg_id()
-        sent_size = self.tcp_socket.send(service_id.to_bytes(2, "big"))
-        sent_size = self.tcp_socket.send(method_id.to_bytes(2, "big"))
+        packet_bytes = service_id.to_bytes(2, "little")
+        packet_bytes += method_id.to_bytes(2, "little")
 
         # Length
-        sent_size = self.tcp_socket.send(length.to_bytes(4, "big"))
+        packet_bytes += length.to_bytes(4, "little")
 
         # Request ID
         client_id, session_id = packet.get_header().RequestID().get_request_id()
-        sent_size = self.tcp_socket.send(client_id.to_bytes(2, "big"))
-        sent_size = self.tcp_socket.send(session_id.to_bytes(2, "big"))
+        packet_bytes += client_id.to_bytes(2, "little")
+        packet_bytes += session_id.to_bytes(2, "little")
 
         # Protocol version
         protocol_version = packet.get_header().ProtocolVersion.DEFAULT
-        sent_size = self.tcp_socket.send(protocol_version.to_bytes(1, "big"))
+        packet_bytes += protocol_version.to_bytes(1, "little")
 
         # Interface version
         interface_version = packet.get_header().InterfaceVersion.DEFAULT
-        sent_size = self.tcp_socket.send(interface_version.to_bytes(1, "big"))
+        packet_bytes += interface_version.to_bytes(1, "little")
 
         # Message type
         message_type = packet.get_header().MessageType.RESPONSE
-        sent_size = self.tcp_socket.send(message_type.to_bytes(1, "big"))
+        packet_bytes += message_type.to_bytes(1, "little")
 
         # Return code
         return_code = packet.get_header().ReturnCode.DEFAULT
-        sent_size = self.tcp_socket.send(return_code.to_bytes(1, "big"))
+        packet_bytes += return_code.to_bytes(1, "little")
+
+        # Payload
+        packet_bytes += payoad
 
         print(f"service_id: {service_id}")
         print(f"method_id: {method_id}")
@@ -240,6 +250,14 @@ class Sender:
         print(f"interface: {interface_version}")
         print(f"msg type: {message_type}")
         print(f"return code: {return_code}")
+
+        return packet_bytes
+
+    def send(self, packet: MyPacket) -> None:
+        packet_bytes = self.packet_to_bytes(packet)
+        sent_size = self.tcp_socket.send(packet_bytes)
+        print(f"sent_size: {sent_size}")
+        self.save_in_file(packet_bytes)
 
     def receive(self) -> MyPacket:
         pass
@@ -252,6 +270,9 @@ class PacketSize:
 
 
 def make_random_data(payload_length: int) -> List[int]:
+    """
+    Generate random data for payload
+    """
     payload = bytearray(payload_length)
     print(f"sys.getsizeof(payload): {sys.getsizeof(payload)}")
 
@@ -263,12 +284,17 @@ def make_random_data(payload_length: int) -> List[int]:
 
 
 def get_random_payload_size() -> int:
+    """
+    Generate a random number for the size of the payload
+    """
     return random.randint(0, PacketSize.MAX_PAYLOAD_3K)
 
 
-def make_packet_for_sending(packet: MyPacket) -> None:
+def settings_for_packet(packet: MyPacket) -> None:
+    """
+    settings for a packet
+    """
     header = packet.get_header()
-    payload: bytearray = packet.get_payload()
 
     # 1. Length
     payload_length: int = get_random_payload_size()
@@ -283,16 +309,17 @@ def make_packet_for_sending(packet: MyPacket) -> None:
 
 
 def main():
-    """
-    1. set a random number for lenth(Header + Payload), Max payload is 3K
-    """
     packet = MyPacket()
     sender = Sender()
 
-    for _ in range(10):
-        make_packet_for_sending(packet)
+    for _ in range(60):
+        settings_for_packet(packet)
         sender.send(packet)
+        time.sleep(1)
+        print("#################################################")
+        print("#################################################")
 
+    sender.close()
     print("finished!")
     print("check the file!")
 
