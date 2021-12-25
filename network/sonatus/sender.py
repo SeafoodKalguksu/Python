@@ -173,24 +173,6 @@ class MyPacket:
     def set_payload(self, payload) -> None:
         self._payload = payload
 
-    def read(self) -> None:
-        """
-        1. Read 4 bytes for Message ID
-        2. Read 4 bytes for Length
-        3. Read 4 bytes for Request ID
-        4. Read 1 byte for Protocol Version
-        5. Read 1 byte for Interface Version
-        6. Read 1 byte for Message Type
-        7. Read 1 byte for Return Code
-        8. Read (Length size - Header size) bytes for Payload
-        """
-
-    def send(self) -> None:
-        pass
-
-    def receive(self) -> None:
-        pass
-
 
 class Sender:
     def __init__(self) -> None:
@@ -316,7 +298,6 @@ def main():
         settings_for_packet(packet)
         sender.send(packet)
         time.sleep(1)
-        print("#################################################")
         print("#################################################")
 
     sender.close()
