@@ -4,6 +4,7 @@
 
 import socket
 from sender import MyPacket
+import time
 
 """
 Server
@@ -11,58 +12,107 @@ Server
 
 
 class Receiver:
-    pass
+    def __init__(self) -> None:
+        self.header: bytearray = None
+        self.payload: bytearray = None
 
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.address = ("localhost", 5004)
+        self.socket.bind(self.address)
+        self.socket.listen(1)
+        self.conn, self.addr = self.socket.accept()
+        # self.file = open("received_packet.txt", "ab")
+        print("Connected by", self.addr)
 
-def receive(conn: socket, file) -> bool:
-    """
-    1. Header 16 bytes 한 번에 수신
-    2. 헤더 파싱
-    3. payload 한 번에 수신
-    """
-    # Message ID
-    service_id = conn.recv(2)
-    if not service_id:
-        return False
+    def close(self) -> None:
+        # self.file.close()
+        self.conn.close()
 
-    print(f"service_id: {int.from_bytes(service_id, 'little')}")
-    method_id = conn.recv(2)
-    print(f"method_id: {int.from_bytes(method_id, 'little')}")
+    def send(self) -> None:
+        # Header
+        header = int.from_bytes(self.header, "big")
+        service_id = header >> 14 * 8 & 0xFFFF
+        method_id = header >> 12 * 8 & 0xFFFF
+        length = header >> 8 * 8 & 0xFFFFFFFF
+        client_id = header >> 6 * 8 & 0xFFFF
+        session_id = header >> 4 * 8 & 0xFFFF
+        protocol_version = header >> 3 * 8 & 0xFF
+        interface_version = header >> 2 * 8 & 0xFF
+        message_type = header >> 1 * 8 & 0xFF
+        return_code = header & 0xFF
 
-    # Length
-    length = conn.recv(4)
-    print(f"length: {int.from_bytes(length, 'little')}")
+        print(f"will send, service_id: {service_id}")
+        print(f"will send, method_id: {method_id}")
+        print(f"will send, length: {length}")
+        print(f"will send, client_id: {client_id}")
+        print(f"will send, session_id: {session_id}")
+        print(f"will send, protocol: {protocol_version}")
+        print(f"will send, interface: {interface_version}")
+        print(f"will send, msg type: {message_type}")
+        print(f"will send, return code: {return_code}")
 
-    # Request ID
-    client_id = conn.recv(2)
-    print(f"client_id: {int.from_bytes(client_id, 'little')}")
-    session_id = conn.recv(2)
-    print(f"session_id: {int.from_bytes(session_id, 'little')}")
+        self.conn.send(self.header + self.payload)
 
-    # Protocol version
-    protocol_version = conn.recv(1)
-    print(f"protocol: {int.from_bytes(protocol_version, 'little')}")
+    def receive(self, conn: socket) -> bool:
+        """
+        1. receive header
+        2. get length from header
+        3. receive payload by using length - header size
+        """
+        header_bytes = conn.recv(16)
+        if not header_bytes:
+            return False
 
-    # Interface version
-    interface_version = conn.recv(1)
-    print(f"interface: {int.from_bytes(interface_version, 'little')}")
+        # Header
+        header = int.from_bytes(header_bytes, "big")
+        service_id = header >> 14 * 8 & 0xFFFF
+        method_id = header >> 12 * 8 & 0xFFFF
+        length = header >> 8 * 8 & 0xFFFFFFFF
+        client_id = header >> 6 * 8 & 0xFFFF
+        session_id = header >> 4 * 8 & 0xFFFF
+        protocol_version = header >> 3 * 8 & 0xFF
+        interface_version = header >> 2 * 8 & 0xFF
+        message_type = header >> 1 * 8 & 0xFF
+        return_code = header & 0xFF
 
-    # Message type
-    message_type = conn.recv(1)
-    print(f"msg type: {int.from_bytes(message_type, 'little')}")
+        print(f"received, service_id: {service_id}")
+        print(f"received, method_id: {method_id}")
+        print(f"received, length: {length}")
+        print(f"received, client_id: {client_id}")
+        print(f"received, session_id: {session_id}")
+        print(f"received, protocol: {protocol_version}")
+        print(f"received, interface: {interface_version}")
+        print(f"received, msg type: {message_type}")
+        print(f"received, return code: {return_code}")
+        print("#################################################")
 
-    # Return code
-    return_code = conn.recv(1)
-    print(f"return code: {int.from_bytes(return_code, 'little')}")
+        # Update message type in header to MessageType.REQUEST
+        message_type = 0x00
+        header = header & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF
 
-    # Payload
-    print(f"length: {int.from_bytes(length, 'little')}")
-    payload = conn.recv(int.from_bytes(length, "little") - 16)
+        # Payload
+        payload = conn.recv(length - 16)
 
-    print("#################################################")
-    print("#################################################")
+        self.header = header.to_bytes(16, "big")
+        self.payload = payload
 
-    save_in_file(
+        # self.save_packet_in_file(
+        #     service_id,
+        #     method_id,
+        #     length,
+        #     client_id,
+        #     session_id,
+        #     protocol_version,
+        #     interface_version,
+        #     message_type,
+        #     return_code,
+        #     payload,
+        #     file,
+        # )
+        return True
+
+    def save_packet_in_file(
+        self,
         service_id,
         method_id,
         length,
@@ -74,61 +124,32 @@ def receive(conn: socket, file) -> bool:
         return_code,
         payload,
         file,
-    )
-    return True
-
-
-def save_in_file(
-    service_id,
-    method_id,
-    length,
-    client_id,
-    session_id,
-    protocol_version,
-    interface_version,
-    message_type,
-    return_code,
-    payload,
-    file,
-) -> None:
-    file.write(
-        service_id
-        + method_id
-        + length
-        + client_id
-        + service_id
-        + protocol_version
-        + interface_version
-        + message_type
-        + return_code
-        + payload
-    )
+    ) -> None:
+        file.write(
+            service_id
+            + method_id
+            + length
+            + client_id
+            + service_id
+            + protocol_version
+            + interface_version
+            + message_type
+            + return_code
+            + payload
+        )
 
 
 def main():
-    my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    address = ("localhost", 5004)
-    my_socket.bind(address)
-    my_socket.listen(1)
-    connection, addr = my_socket.accept()
-    file = open("received_packet.txt", "ab")
-    print("Connected by", addr)
-
-    # with connection:
-    #     print("Connected by", addr)
-    #     while True:
-    #         data = connection.recv(1024)
-    #         if not data:
-    #             break
-    #         connection.sendall(data)
+    receiver = Receiver()
 
     while True:
-        if False == receive(connection, file):
+        if False == receiver.receive(receiver.conn):
             break
+        else:
+            receiver.send()
+            print("#################################################")
 
-    file.close()
-    connection.close()
-    my_socket.close()
+    receiver.close()
 
 
 if __name__ == "__main__":
