@@ -193,32 +193,32 @@ class Sender:
 
         # Message ID
         service_id, method_id = packet.get_header().MessageID().get_msg_id()
-        packet_bytes = service_id.to_bytes(2, "little")
-        packet_bytes += method_id.to_bytes(2, "little")
+        packet_bytes = service_id.to_bytes(2, "big")
+        packet_bytes += method_id.to_bytes(2, "big")
 
         # Length
-        packet_bytes += length.to_bytes(4, "little")
+        packet_bytes += length.to_bytes(4, "big")
 
         # Request ID
         client_id, session_id = packet.get_header().RequestID().get_request_id()
-        packet_bytes += client_id.to_bytes(2, "little")
-        packet_bytes += session_id.to_bytes(2, "little")
+        packet_bytes += client_id.to_bytes(2, "big")
+        packet_bytes += session_id.to_bytes(2, "big")
 
         # Protocol version
         protocol_version = packet.get_header().ProtocolVersion.DEFAULT
-        packet_bytes += protocol_version.to_bytes(1, "little")
+        packet_bytes += protocol_version.to_bytes(1, "big")
 
         # Interface version
         interface_version = packet.get_header().InterfaceVersion.DEFAULT
-        packet_bytes += interface_version.to_bytes(1, "little")
+        packet_bytes += interface_version.to_bytes(1, "big")
 
         # Message type
         message_type = packet.get_header().MessageType.RESPONSE
-        packet_bytes += message_type.to_bytes(1, "little")
+        packet_bytes += message_type.to_bytes(1, "big")
 
         # Return code
         return_code = packet.get_header().ReturnCode.DEFAULT
-        packet_bytes += return_code.to_bytes(1, "little")
+        packet_bytes += return_code.to_bytes(1, "big")
 
         # Payload
         packet_bytes += payoad
@@ -242,7 +242,7 @@ class Sender:
         self.save_in_file(packet_bytes)
 
     def receive(self) -> MyPacket:
-        pass
+        self.
 
 
 class PacketSize:
@@ -294,9 +294,10 @@ def main():
     packet = MyPacket()
     sender = Sender()
 
-    for _ in range(60):
+    for _ in range(2):
         settings_for_packet(packet)
         sender.send(packet)
+        sender.receive()
         time.sleep(1)
         print("#################################################")
 
