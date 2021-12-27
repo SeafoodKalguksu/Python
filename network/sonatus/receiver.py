@@ -3,8 +3,8 @@
 # pylint: disable=missing-function-docstring
 
 import socket
-from sender import MyPacket
 import time
+from some_over_ip import PacketForSOMEoverIP
 
 """
 Server
@@ -55,9 +55,9 @@ class Receiver:
 
     def receive(self, conn: socket) -> bool:
         """
-        1. receive header
-        2. get length from header
-        3. receive payload by using length - header size
+        1. Receive header(16 bytes)
+        2. Get 'length' from the header
+        3. Receive payload
         """
         header_bytes = conn.recv(16)
         if not header_bytes:
