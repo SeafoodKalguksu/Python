@@ -92,13 +92,16 @@ def set_default_values_in_dictionary() -> None:
     def using_dict_get() -> None:
         """
         dict().get(key, default_value)
-        None is a default value for non-existent key of dictionary
+        The get() method returns the value of the item with the specified key.
+        None is a default value for non-existent key of dictionary.
         """
         size = shopping_dict.get("size")
         print(size)  # None
 
         color = shopping_dict.get("color", "red")
         print(color)  # red
+
+        print(shopping_dict)  # {'item': 'shirt', 'price': 10.0}
 
     def using_dict_setdefault() -> None:
         """
@@ -111,13 +114,16 @@ def set_default_values_in_dictionary() -> None:
         print(shopping_dict)  # {'item': 'shirt', 'price': 10.0, 'count': 0}
 
     def using_collections_defaultdict() -> None:
+        """
+        Return a new dictionary-like object.
+        defaultdict is a subclass of the built-in dict class.
+        """
         dic: DefaultDict[str, int] = collections.defaultdict(int)
         dic["A"] = 90
         dic["B"] = 80
         dic["C"] += 1
 
-        print(dic)
-        # defaultdict(<class 'int'>, {'A': 90, 'B': 80, 'C': 1})
+        print(dic)  # defaultdict(<class 'int'>, {'A': 90, 'B': 80, 'C': 1})
 
         print("collections.defaultdict(int), dic['C']: ", dic["C"])
         # collections.defaultdict(int), dic['C']:  1
