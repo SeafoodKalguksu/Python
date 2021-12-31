@@ -2,7 +2,8 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 
-from typing import List, Dict
+import sys
+from typing import List, Dict, Set
 
 RANGE: int = 0
 ENUMERATE: int = 1
@@ -59,8 +60,31 @@ def using_sorted() -> None:
     print(sorted(complex_data, key=lambda element: element["age"]))
 
 
+def using_set() -> None:
+    """
+    4. store unique values with set()
+    """
+    numbers: List[int] = [1, 2, 3, 4, 5, 6, 7, 7, 7]
+    unique_numbers: Set[int] = set(numbers)
+    print(unique_numbers)
+
+
+def using_generator() -> None:
+    """
+    5. Save memory with generators
+    """
+    numbers_list = [number for number in range(10000)]  # 85176 bytes
+    print(sum(numbers_list))
+    print(sys.getsizeof(numbers_list), "bytes")
+
+    numbers_generator = (number for number in range(10000))  # 104 bytes
+    print(sum(numbers_generator))
+    print(sys.getsizeof(numbers_generator), "bytes")
+
+
 def main() -> None:
     using_sorted()
+    using_generator()
 
 
 if __name__ == "__main__":
