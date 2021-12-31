@@ -3,7 +3,8 @@
 # pylint: disable=missing-function-docstring
 
 import sys
-from typing import List, Dict, Set
+import collections
+from typing import List, DefaultDict, Dict, Set
 
 RANGE: int = 0
 ENUMERATE: int = 1
@@ -82,9 +83,67 @@ def using_generator() -> None:
     print(sys.getsizeof(numbers_generator), "bytes")
 
 
+def set_default_values_in_dictionary() -> None:
+    """
+    6. Define default values in Dictionaries with .get() and .setdefault()
+    """
+    shopping_dict = {"item": "shirt", "price": 10.00}
+
+    def using_dict_get() -> None:
+        """
+        dict().get(key, default_value)
+        None is a default value for non-existent key of dictionary
+        """
+        size = shopping_dict.get("size")
+        print(size)  # None
+
+        color = shopping_dict.get("color", "red")
+        print(color)  # red
+
+    def using_dict_setdefault() -> None:
+        """
+        setdefault(key[, default])
+        If key is in the dictionary, return its value. If not, insert key with
+        a value of default and return default. default defaults to None.
+        """
+        count = shopping_dict.setdefault("count", 0)
+        print(count)  # 0
+        print(shopping_dict)  # {'item': 'shirt', 'price': 10.0, 'count': 0}
+
+    def using_collections_defaultdict() -> None:
+        dic: DefaultDict[str, int] = collections.defaultdict(int)
+        dic["A"] = 90
+        dic["B"] = 80
+        dic["C"] += 1
+
+        print(dic)
+        # defaultdict(<class 'int'>, {'A': 90, 'B': 80, 'C': 1})
+
+        print("collections.defaultdict(int), dic['C']: ", dic["C"])
+        # collections.defaultdict(int), dic['C']:  1
+
+        print("collections.defaultdict(int), dic['D']: ", dic["D"])
+        # collections.defaultdict(int), dic['D']:  0
+
+        print(dic)
+        # defaultdict(<class 'int'>, {'A': 90, 'B': 80, 'C': 1, 'D': 0})
+
+    def using_key_only() -> None:
+        size = shopping_dict["size"]
+        print(size)
+        # File "/Users/heeseok/Development/SeafoodKalguksu/Python/refactoring.py", line 91, in set_default_values_in_dictionary
+        #    size = shopping_dict["size"]
+        #    KeyError: 'size'
+
+    using_dict_get()
+    using_dict_setdefault()
+    using_collections_defaultdict()
+
+
 def main() -> None:
     using_sorted()
     using_generator()
+    set_default_values_in_dictionary()
 
 
 if __name__ == "__main__":
