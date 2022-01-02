@@ -4,7 +4,7 @@
 
 import sys
 import collections
-from typing import List, DefaultDict, Dict, Set
+from typing import Counter, List, DefaultDict, Dict, Set
 
 RANGE: int = 0
 ENUMERATE: int = 1
@@ -141,9 +141,28 @@ def set_default_values_in_dictionary() -> None:
         #    size = shopping_dict["size"]
         #    KeyError: 'size'
 
+    def using_counter() -> None:
+        """
+        7. Count hashable objects with collections.Counter
+        """
+        numbers: List[int] = [10, 10, 10, 5, 5, 2, 9, 9, 9, 9, 9, 9]
+        counter = collections.Counter(numbers)
+
+        # Accessing a specific item
+        print(counter[10])
+
+        # Return (element, count)
+        print(counter.most_common(3))
+
+        # Return 0 because the list 'numbers' does not have '11' as an element.
+        print(counter[11])
+
+        print(counter)
+
     using_dict_get()
     using_dict_setdefault()
     using_collections_defaultdict()
+    using_counter()
 
 
 def main() -> None:
