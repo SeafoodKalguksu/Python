@@ -148,16 +148,16 @@ def set_default_values_in_dictionary() -> None:
         numbers: List[int] = [10, 10, 10, 5, 5, 2, 9, 9, 9, 9, 9, 9]
         counter = collections.Counter(numbers)
 
-        # Accessing a specific item
-        print(counter[10])
+        # Accessing a specific item.
+        print(counter[10])  # 3
 
-        # Return (element, count)
-        print(counter.most_common(3))
+        # Accessing an item that does not exist in the list, 0 is returned.
+        print(counter[11])  # 0
 
-        # Return 0 because the list 'numbers' does not have '11' as an element.
-        print(counter[11])
+        # most_common() returns List[Tuple[element: int, count: int]]
+        print(counter.most_common(3))  # [(9, 6), (10, 3), (5, 2)]
 
-        print(counter)
+        print(counter)  # Counter({9: 6, 10: 3, 5: 2, 2: 1})
 
     using_dict_get()
     using_dict_setdefault()
