@@ -1,4 +1,4 @@
-from typing import NoReturn
+from typing import NoReturn, Optional
 
 
 class TypeNoReturn:
@@ -38,3 +38,25 @@ class TypeNone:
         Explicitly returns None like the function terminated abnormally.
         """
         return None
+
+
+class TypeOptional:
+    """
+    Optional type
+    """
+
+    def example(self, arg: Optional[int] = None) -> NoReturn:
+        pass
+
+    def union_type_expressions(self, arg: int | None) -> NoReturn:
+        pass
+
+
+class TypeUnion:
+    """
+    To define a union, use e.g. Union[int, str] or the shorthand int | str. Using that shorthand is recommended. Details:
+    """
+
+    # union type expressions
+    def square(number: int | float) -> int | float:
+        return number ** 2
