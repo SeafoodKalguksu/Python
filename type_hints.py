@@ -18,9 +18,6 @@ class TypeNoReturn:
         #     request = get_request()
         #     response(request)
 
-    def calls_function_without_return_value(self) -> NoReturn:
-        self.loops_forever()
-
 
 class TypeNone:
     """
